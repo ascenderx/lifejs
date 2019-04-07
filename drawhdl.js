@@ -4,6 +4,7 @@ class DrawHandler {
     cvs.width = window.innerWidth;
     cvs.height = window.innerHeight - 10;
     this._ctx = cvs.getContext('2d');
+    this._ctx.translate(0.5, 0.5);
     this._scrW = cvs.width;
     this._scrH = cvs.height;
     this._bgColor = '#000000';
