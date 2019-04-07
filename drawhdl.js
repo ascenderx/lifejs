@@ -21,23 +21,6 @@ class DrawHandler {
     });
   }
 
-  drawLine(x0, y0, x1, y1, kwargs = {}) {
-    let color = this._fgColor;
-    let thickness = 1;
-
-    for (let key in kwargs) {
-      let value = kwargs[key];
-      switch (key) {
-        case 'color':
-          color = value;
-          break;
-        case 'thickness':
-          thickness = value;
-          break;
-      }
-    }
-  }
-
   update() {
     // draw a black background
     this._ctx.fillStyle = this._bgColor;
@@ -47,6 +30,7 @@ class DrawHandler {
     let zoom = 2 ** (this._camera.zoom / 128);
     let offsetX = this._camera.x;
     let offsetY = this._camera.y;
+    this._ctx.lineWidth = 2;
     this._ctx.strokeStyle = this._fgColor;
     this._ctx.beginPath();
     for (let c = 0; c <= this._grid.width; c++) {
