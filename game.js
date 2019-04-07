@@ -18,23 +18,24 @@ class Game {
   _handleInput() {
     let cameraSpeed = 10;
     let cameraZoomSpeed = 10;
+    let camera = this._hdlDraw.camera;
     let keysDown = this._hdlInput.getKeys();
     if (!("Shift" in keysDown)) {
         if ("ArrowRight" in keysDown) {
-            this._hdlDraw.moveCameraRight(cameraSpeed);
+            camera.moveRight(cameraSpeed);
         } else if ("ArrowLeft" in keysDown) {
-            this._hdlDraw.moveCameraLeft(cameraSpeed);
+            camera.moveLeft(cameraSpeed);
         }
         if ("ArrowDown" in keysDown) {
-            this._hdlDraw.moveCameraDown(cameraSpeed);
+            camera.moveDown(cameraSpeed);
         } else if ("ArrowUp" in keysDown) {
-            this._hdlDraw.moveCameraUp(cameraSpeed);
+            camera.moveUp(cameraSpeed);
         }
     } else {
         if ("ArrowUp" in keysDown) {
-            this._hdlDraw.zoomCameraIn(cameraZoomSpeed);
+            camera.zoomIn(cameraZoomSpeed);
         } else if ("ArrowDown" in keysDown) {
-            this._hdlDraw.zoomCameraOut(cameraZoomSpeed);
+            camera.zoomOut(cameraZoomSpeed);
         }
     }
   }
