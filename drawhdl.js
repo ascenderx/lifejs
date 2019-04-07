@@ -27,25 +27,47 @@ class DrawHandler {
     
     // draw a grid
     let zoom = 10 ** (this._camera[2] / 1000);
+    let offsetX = this._camera[0];
+    let offsetY = this._camera[1];
     this._ctx.strokeStyle = this._fgColor;
     this._ctx.beginPath();
     for (let c = 0; c <= this._grid.width; c++) {
-        let x0 = c * this._grid.cellWidth - this._camera[0];
-        let y0 = 0 - this._camera[1];
-        let x1 = x0;
-        let y1 = y0 + (this._grid.cellHeight * this._grid.height);
+        let x0Pre = c * this._grid.cellWidth;
+        let y0Pre = 0;
+        let x1Pre = x0Pre;
+        let y1Pre = y0Pre + (this._grid.cellHeight * this._grid.height);
         
-        this._ctx.moveTo(x0 * zoom, y0 * zoom);
-        this._ctx.lineTo(x1 * zoom, y1 * zoom);
+        let x0Zoom = x0Pre * zoom;
+        let y0Zoom = y0Pre * zoom;
+        let x1Zoom = x1Pre * zoom;
+        let y1Zoom = y1Pre * zoom;
+        
+        let x0 = x0Zoom - offsetX;
+        let y0 = y0Zoom - offsetY;
+        let x1 = x1Zoom - offsetX;
+        let y1 = y1Zoom - offsetY;
+        
+        this._ctx.moveTo(x0, y0);
+        this._ctx.lineTo(x1, y1);
     }
     for (let r = 0; r <= this._grid.height; r++) {
-        let x0 = 0 - this._camera[0];
-        let y0 = r * this._grid.cellHeight - this._camera[1];
-        let x1 = x0 + (this._grid.cellWidth * this._grid.width);
-        let y1 = y0;
+        let x0Pre = 0;
+        let y0Pre = r * this._grid.cellHeight;
+        let x1Pre = x0Pre + (this._grid.cellWidth * this._grid.width);
+        let y1Pre = y0Pre;
         
-        this._ctx.moveTo(x0 * zoom, y0 * zoom);
-        this._ctx.lineTo(x1 * zoom, y1 * zoom);
+        let x0Zoom = x0Pre * zoom;
+        let y0Zoom = y0Pre * zoom;
+        let x1Zoom = x1Pre * zoom;
+        let y1Zoom = y1Pre * zoom;
+        
+        let x0 = x0Zoom - offsetX;
+        let y0 = y0Zoom - offsetY;
+        let x1 = x1Zoom - offsetX;
+        let y1 = y1Zoom - offsetY;
+        
+        this._ctx.moveTo(x0, y0);
+        this._ctx.lineTo(x1, y1);
     }
     this._ctx.stroke();
   }
