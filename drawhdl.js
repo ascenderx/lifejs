@@ -1,6 +1,8 @@
 class DrawHandler {
   constructor(cvs, grid) {
     this._cvs = cvs;
+    cvs.width = window.innerWidth;
+    cvs.height = window.innerHeight - 10;
     this._ctx = cvs.getContext('2d');
     this._scrW = cvs.width;
     this._scrH = cvs.height;
@@ -8,6 +10,14 @@ class DrawHandler {
     this._fgColor = '#777777';
     this._grid = grid;
     this._camera = [0, 0, 0];
+    this._center = this._scrW / 2;
+    
+    window.addEventListener('resize', () => {
+        this._cvs.width = window.innerWidth;
+        this._cvs.height = window.innerHeight - 10;
+        this._scrW = this._cvs.width;
+        this._scrH = this._cvs.height;
+    });
   }
   
   update() {

@@ -2,8 +2,6 @@ class Game {
   constructor(canvas) {
     // display settings
     this._cvs = canvas;
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - 10;
     this._grid = new Grid(100, 100, 20, 20);
     
     // handlers
