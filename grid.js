@@ -6,9 +6,9 @@ class Grid {
     this._cH = cellHeight;
   }
   
-  compute_pixel(gridPoint) {
-    let pxX = gridPoint[0] * this._cW;
-    let pxY = gridPoint[1] & this._cH;
+  computePixel(gridX, gridY) {
+    let pxX = gridX * this._cW;
+    let pxY = gridY * this._cH;
     
     return [pxX, pxY];
   }

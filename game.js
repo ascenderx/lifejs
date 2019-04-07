@@ -2,11 +2,24 @@ class Game {
   constructor(canvas) {
     // display settings
     this._cvs = canvas;
-    this._grid = new Grid(100, 100, 20, 20);
+    const GRID_WIDTH = 50;
+    const GRID_HEIGHT = 50;
+    const CELL_WIDTH = 20;
+    const CELL_HEIGHT = 20;
+    this._grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+
+    // game settings
+    this._entities = [];
+    const NUM_PLANTS = 30;
+    for (let p = 0; p < NUM_PLANTS; p++) {
+      let x = randIntExcl(0, GRID_WIDTH);
+      let y = randIntExcl(0, GRID_HEIGHT);
+      this._entities.push(new Plant(x, y));
+    }
     
     // handlers
     this._hdlInput = new InputHandler();
-    this._hdlDraw = new DrawHandler(canvas, this._grid);
+    this._hdlDraw = new DrawHandler(canvas, this._grid, this._entities);
     
     // timer settings
     this._looper = null;

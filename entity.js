@@ -4,7 +4,9 @@ class Entity {
     this._y = y;
   }
   
-  draw() { }
+  draw() {
+    return null;
+  }
   
   get position() {
     return [this._x, this._y];

@@ -1,5 +1,5 @@
 class DrawHandler {
-  constructor(cvs, grid) {
+  constructor(cvs, grid, entities) {
     this._cvs = cvs;
     cvs.width = window.innerWidth;
     cvs.height = window.innerHeight - 10;
@@ -12,6 +12,7 @@ class DrawHandler {
     this._grid = grid;
     this._camera = new Camera();
     this._center = this._scrW / 2;
+    this._entities = entities;
 
     window.addEventListener('resize', () => {
       this._cvs.width = window.innerWidth;
@@ -72,7 +73,50 @@ class DrawHandler {
       this._ctx.lineTo(x1, y1);
     }
     this._ctx.stroke();
-}
+    
+    // draw entities
+    for (let entity of this._entities) {
+      let position = entity.position;
+      let drawData = entity.draw();
+      let polygon = drawData.polygon;
+      let color = drawData.color;
+      let filled = drawData.filled;
+      
+      // TODO: account for camera position & zoom
+      // get cell center
+      let xc = position[0] + 0.5;
+      let yc = position[1] + 0.5;
+      
+      // get pixel point
+      let grid = this._grid;
+      function getPixel(pt) {
+        // compute polygon points within cell
+        let xp = xc + 0.5 * pt[0];
+        let yp = yc + 0.5 * pt[1];
+        
+        // scale to display
+        return grid.computePixel(xp, yp);
+      }
+      let points = polygon.points;
+      this._ctx.beginPath();
+      // move to first point
+      let px0 = getPixel(points[0]);
+      this._ctx.moveTo(px0[0], px0[1]);
+      // draw other points
+      for (let p = 1; p < points.length; p++) {
+        let px = getPixel(points[p]);
+        this._ctx.lineTo(px[0], px[1]);
+      }
+      this._ctx.closePath();
+      if (filled) {
+        this._ctx.fillStyle = color;
+        this._ctx.fill();
+      } else {
+        this._ctx.strokeStyle = color;
+        this._ctx.stroke();
+      }
+    }
+  }
 
   get camera() {
     return this._camera;
