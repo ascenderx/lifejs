@@ -10,7 +10,11 @@ class DrawHandler {
     this._bgColor = '#000000';
     this._fgColor = '#777777';
     this._grid = grid;
-    this._camera = [0, 0, 0];
+    this._camera = {
+        x: 0,
+        y: 0,
+        z: 0,
+    };
     this._center = this._scrW / 2;
     
     window.addEventListener('resize', () => {
@@ -27,9 +31,9 @@ class DrawHandler {
     this._ctx.fillRect(0, 0, this._scrW, this._scrH);
     
     // draw a grid
-    let zoom = 10 ** (this._camera[2] / 1000);
-    let offsetX = this._camera[0];
-    let offsetY = this._camera[1];
+    let zoom = 2 ** (this._camera.z / 128);
+    let offsetX = this._camera.x;
+    let offsetY = this._camera.y;
     this._ctx.strokeStyle = this._fgColor;
     this._ctx.beginPath();
     for (let c = 0; c <= this._grid.width; c++) {
@@ -73,53 +77,53 @@ class DrawHandler {
     this._ctx.stroke();
   }
   
-  getCameraX() {
-    return camera[0];
+  get cameraX() {
+    return camera.x;
   }
   
-  getCameraY() {
-    return camera[1];
+  get cameraY() {
+    return camera.y;
   }
   
-  getCameraZ() {
-    return camera[2];
+  get cameraZ() {
+    return camera.z;
   }
   
   moveCamera(dx, dy) {
-    this._camera[0] += dx;
-    this._camera[1] += dy;
+    this._camera.x += dx;
+    this._camera.y += dy;
   }
   
   moveCameraLeft(dx) {
-    this._camera[0] -= dx;
+    this._camera.x -= dx;
   }
   
   moveCameraRight(dx) {
-    this._camera[0] += dx;
+    this._camera.x += dx;
   }
   
   moveCameraUp(dy) {
-    this._camera[1] -= dy;
+    this._camera.y -= dy;
   }
   
   moveCameraDown(dy) {
-    this._camera[1] += dy;
+    this._camera.y += dy;
   }
   
   moveCameraTo(x, y) {
-    this._camera[0] = x;
-    this._camera[1] = y;
+    this._camera.x = x;
+    this._camera.y = y;
   }
   
   zoomCameraIn(dz) {
-    this._camera[2] += dz;
+    this._camera.z += dz;
   }
   
   zoomCameraOut(dz) {
-    this._camera[2] -= dz;
+    this._camera.z -= dz;
   }
   
   zoomCameraTo(z) {
-    this._camera[2] = z;
+    this._camera.z = z;
   }
 }
