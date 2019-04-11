@@ -7,8 +7,10 @@ class Game {
     const CELL_WIDTH = 20;
     const CELL_HEIGHT = 20;
     this._grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-    this._framesToWait = 2;
-    this._paused = false;
+    
+    // input settings
+    this._MOUSE_MARGIN_X = 40;
+    this._MOUSE_MARGIN_Y = 40;
 
     // game settings
     this._entities = [];
@@ -37,6 +39,8 @@ class Game {
     this._paused = false;
     this._fps = 40;
     this._interval = Math.floor(1000 / this._fps);
+    this._framesToWait = 2;
+    this._paused = false;
   }
   
   _handleInput() {
@@ -44,21 +48,32 @@ class Game {
     let cameraSpeed = 10 / camera.computedZoom;
     let cameraZoomSpeed = 10;
     let keysDown = this._hdlInput.getKeys();
+    let mouseXY = this._hdlInput.getMousePosition();
+    let mouseScrollX = this._hdlInput.getMouseScrollX();
+    let mouseScrollY = this._hdlInput.getMouseScrollY();
+    
     if (!('Shift' in keysDown)) {
-      if ('ArrowRight' in keysDown) {
+      /*
+      let mouseOnLeftEdge = mouseXY[0] < (0 + this._MOUSE_MARGIN_X);
+      let mouseOnRightEdge = mouseXY[0] > (this._cvs.width - this._MOUSE_MARGIN_X);
+      let mouseOnTopEdge = mouseXY[1] < (0 + this._MOUSE_MARGIN_Y);
+      let mouseOnBottomEdge = mouseXY[1] > (this._cvs.height - this._MOUSE_MARGIN_Y);
+      */
+      
+      if ('ArrowRight' in keysDown || mouseScrollX > 0) {
         camera.moveRight(cameraSpeed);
-      } else if ('ArrowLeft' in keysDown) {
+      } else if ('ArrowLeft' in keysDown || mouseScrollX < 0) {
         camera.moveLeft(cameraSpeed);
       }
-      if ('ArrowDown' in keysDown) {
+      if ('ArrowDown' in keysDown || mouseScrollY < 0) {
         camera.moveDown(cameraSpeed);
-      } else if ('ArrowUp' in keysDown) {
+      } else if ('ArrowUp' in keysDown || mouseScrollY > 0) {
         camera.moveUp(cameraSpeed);
       }
     } else {
-      if ('ArrowUp' in keysDown) {
+      if ('ArrowUp' in keysDown || mouseScrollY > 0) {
         camera.zoomIn(cameraZoomSpeed);
-      } else if ('ArrowDown' in keysDown) {
+      } else if ('ArrowDown' in keysDown || mouseScrollY < 0) {
         camera.zoomOut(cameraZoomSpeed);
       }
     }
@@ -67,6 +82,8 @@ class Game {
       this._paused = !this._paused;
       this._hdlInput.debounceKey('p');
     }
+    
+    this._hdlInput.update();
   }
   
   run() {

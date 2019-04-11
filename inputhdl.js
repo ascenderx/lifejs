@@ -5,6 +5,8 @@ class InputHandler {
     this._mouse = {
       x: null,
       y: null,
+      scrollX: null,
+      scrollY: null,
       button: null,
     };
     
@@ -42,6 +44,11 @@ class InputHandler {
       this._mouse.x = event.clientX;
       this._mouse.y = event.clientY;
     });
+    
+    window.addEventListener('wheel', (event) => {
+      this._mouse.scrollX = event.deltaX;
+      this._mouse.scrollY = event.deltaY;
+    });
   }
   
   getKeys() {
@@ -58,6 +65,11 @@ class InputHandler {
   
   isKeyDown(keyName) {
     return keyName in this._keys;
+  }
+  
+  debounceKey(key) {
+    this._debouncedKeys[key] = true;
+    delete this._keys[key];
   }
   
   getMousePosition() {
@@ -80,8 +92,16 @@ class InputHandler {
     return this._mouse.button === button;    
   }
   
-  debounceKey(key) {
-    this._debouncedKeys[key] = true;
-    delete this._keys[key];
+  getMouseScrollX() {
+    return this._mouse.scrollX;
+  }
+  
+  getMouseScrollY() {
+    return this._mouse.scrollY;
+  }
+  
+  update() {
+    this._mouse.scrollX = 0;
+    this._mouse.scrollY = 0;
   }
 }
