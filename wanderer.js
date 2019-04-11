@@ -35,7 +35,7 @@ class Wanderer extends Moveable {
         break;
       
       case _W_DIRS.W:
-        this._dx = -this.speed;
+        this._dx = -this._speed;
         this._dy = 0;
         break;
       
@@ -46,7 +46,7 @@ class Wanderer extends Moveable {
   }
   
   _generateDirection() {
-    return randomInt(1 - this._sleepProb, _W_NUM_DIRS - 1);
+    return randomInt(-5, _W_NUM_DIRS - 1);
   }
   
   move() {

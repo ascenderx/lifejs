@@ -27,6 +27,17 @@ class Grid {
     return [x, y];
   }
   
+  wrapEntityPosition(entity) {
+    entity.x %= this._w;
+    entity.y %= this._h;
+    if (entity.x < 0) {
+      entity.x = this._w - entity.x;
+    }
+    if (entity.y < 0) {
+      entity.y = this._h - entity.y;
+    }
+  }
+  
   get width() {
     return this._w;
   }

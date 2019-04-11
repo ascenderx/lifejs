@@ -7,6 +7,8 @@ class Game {
     const CELL_WIDTH = 20;
     const CELL_HEIGHT = 20;
     this._grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
+    this._framesToWait = 3;
+    this._paused = false;
 
     // game settings
     this._entities = [];
@@ -20,17 +22,19 @@ class Game {
     for (let w = 0; w < NUM_WANDERERS; w++) {
       let x = randomIntExcl(0, GRID_WIDTH);
       let y = randomIntExcl(0, GRID_HEIGHT);
-      this._entities.push(new Wanderer(x, y));
+      let sleepProb = randomInt(0, 10);
+      this._entities.push(new Wanderer(x, y, sleepProb));
     }
     
     // handlers
     this._hdlInput = new InputHandler();
-    this._hdlDraw = new DrawHandler(canvas, this._grid, this._entities);
+    this._hdlDraw = new DrawHandler(this._cvs, this._grid, this._entities);
+    this._hdlEntities = new EntityHandler(this._cvs, this._grid, this._entities);
     
     // timer settings
     this._looper = null;
     this._paused = false;
-    this._fps = 50;
+    this._fps = 40;
     this._interval = Math.floor(1000 / this._fps);
   }
   
@@ -57,12 +61,25 @@ class Game {
         camera.zoomOut(cameraZoomSpeed);
       }
     }
+    
+    if ('p' in keysDown) {
+      this._paused = !this._paused;
+      this._hdlInput.debounceKey('p');
+    }
   }
   
   run() {
+    let frameCounter = 0;
     this._looper = new Looper(() => {
       this._handleInput();
+      if (!this._paused) {
+        if (frameCounter % this._framesToWait === 0) {
+          this._hdlEntities.update();
+        }
+      }
       this._hdlDraw.update();
+      
+      frameCounter++;
     }, this._interval);
     this._looper.start();
   }

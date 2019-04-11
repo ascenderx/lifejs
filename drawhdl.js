@@ -1,5 +1,5 @@
 class DrawHandler {
-  constructor(cvs, grid, entities) {
+  constructor(cvs, grid, entities = []) {
     this._cvs = cvs;
     cvs.width = window.innerWidth;
     cvs.height = window.innerHeight - 10;
@@ -8,7 +8,7 @@ class DrawHandler {
     this._scrW = cvs.width;
     this._scrH = cvs.height;
     this._bgColor = '#000000';
-    this._fgColor = '#777777';
+    this._fgColor = '#333333';
     this._grid = grid;
     this._camera = new Camera({
       width: cvs.width,
