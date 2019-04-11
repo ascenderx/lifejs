@@ -101,6 +101,10 @@ class Camera {
     return this._computedZoom;
   }
   
+  get crossHairsEnabled() {
+    return this._crossHairs;
+  }
+  
   set width(rhs) {
     this._w = rhs;
   }

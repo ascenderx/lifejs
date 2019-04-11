@@ -24,6 +24,8 @@ class DrawHandler {
       this._scrW = this._cvs.width;
       this._scrH = this._cvs.height;
     });
+    this._crosshairsEnabled = false;
+    this._crosshairsColor = '#0000ff';
   }
 
   update() {
@@ -118,14 +120,16 @@ class DrawHandler {
       }
     }
     
-    // draw camera crosshairs
-    this._ctx.beginPath();
-    this._ctx.moveTo(cvs.width / 2, 0);
-    this._ctx.lineTo(cvs.width / 2, cvs.height);
-    this._ctx.moveTo(0, cvs.height / 2);
-    this._ctx.lineTo(cvs.width, cvs.height / 2);
-    this._ctx.strokeStyle = '#0000ff';
-    this._ctx.stroke();
+    if (this._crosshairsEnabled) {
+      // draw camera crosshairs
+      this._ctx.beginPath();
+      this._ctx.moveTo(cvs.width / 2, 0);
+      this._ctx.lineTo(cvs.width / 2, cvs.height);
+      this._ctx.moveTo(0, cvs.height / 2);
+      this._ctx.lineTo(cvs.width, cvs.height / 2);
+      this._ctx.strokeStyle = this._crosshairsColor;
+      this._ctx.stroke();
+    }
   }
 
   get camera() {
