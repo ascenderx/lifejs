@@ -10,8 +10,12 @@ class DrawHandler {
     this._bgColor = '#000000';
     this._fgColor = '#777777';
     this._grid = grid;
-    this._camera = new Camera();
-    this._center = this._scrW / 2;
+    this._camera = new Camera({
+      width: cvs.width,
+      height: cvs.height,
+      center: grid.scalePoint(grid.width / 2, grid.height / 2),
+      // position: [20, 20],
+    });
     this._entities = entities;
 
     window.addEventListener('resize', () => {
@@ -28,49 +32,40 @@ class DrawHandler {
     this._ctx.fillRect(0, 0, this._scrW, this._scrH);
 
     // draw a grid
-    let zoom = 2 ** (this._camera.zoom / 128);
-    let offsetX = this._camera.x;
-    let offsetY = this._camera.y;
+    let grid = this._grid;
+    let camera = this._camera;
     this._ctx.lineWidth = 2;
     this._ctx.strokeStyle = this._fgColor;
     this._ctx.beginPath();
+    // start with vertical column lines
     for (let c = 0; c <= this._grid.width; c++) {
+      // start at [column, 0]
       let x0Pre = c * this._grid.cellWidth;
       let y0Pre = 0;
+      // end at [column, grid height]
       let x1Pre = x0Pre;
       let y1Pre = y0Pre + (this._grid.cellHeight * this._grid.height);
+      // apply camera view
+      let pt0 = camera.transformPoint(x0Pre, y0Pre);
+      let pt1 = camera.transformPoint(x1Pre, y1Pre);
       
-      let x0Zoom = x0Pre * zoom;
-      let y0Zoom = y0Pre * zoom;
-      let x1Zoom = x1Pre * zoom;
-      let y1Zoom = y1Pre * zoom;
-      
-      let x0 = x0Zoom - offsetX;
-      let y0 = y0Zoom - offsetY;
-      let x1 = x1Zoom - offsetX;
-      let y1 = y1Zoom - offsetY;
-      
-      this._ctx.moveTo(x0, y0);
-      this._ctx.lineTo(x1, y1);
+      this._ctx.moveTo(pt0[0], pt0[1]);
+      this._ctx.lineTo(pt1[0], pt1[1]);
     }
+    // then do horizontal row lines
     for (let r = 0; r <= this._grid.height; r++) {
+      // start at [0, row]
       let x0Pre = 0;
       let y0Pre = r * this._grid.cellHeight;
+      // end at [grid width, row]
       let x1Pre = x0Pre + (this._grid.cellWidth * this._grid.width);
       let y1Pre = y0Pre;
+      // apply camera view
+      let pt0 = camera.transformPoint(x0Pre, y0Pre);
+      let pt1 = camera.transformPoint(x1Pre, y1Pre);
       
-      let x0Zoom = x0Pre * zoom;
-      let y0Zoom = y0Pre * zoom;
-      let x1Zoom = x1Pre * zoom;
-      let y1Zoom = y1Pre * zoom;
-      
-      let x0 = x0Zoom - offsetX;
-      let y0 = y0Zoom - offsetY;
-      let x1 = x1Zoom - offsetX;
-      let y1 = y1Zoom - offsetY;
-      
-      this._ctx.moveTo(x0, y0);
-      this._ctx.lineTo(x1, y1);
+      this._ctx.moveTo(pt0[0], pt0[1]);
+      this._ctx.lineTo(pt1[0], pt1[1]);
     }
     this._ctx.stroke();
     
@@ -88,26 +83,32 @@ class DrawHandler {
       let yc = position[1] + 0.5;
       
       // get pixel point
-      let grid = this._grid;
       function getPixel(pt) {
-        // compute polygon points within cell
+        // scale polygon point to cell
         let xp = xc + 0.5 * pt[0];
         let yp = yc + 0.5 * pt[1];
         
-        // scale to display
-        return grid.computePixel(xp, yp);
+        // scale point to display
+        let pixelFromCenter = grid.scalePoint(xp, yp);
+        let pixelCamera = camera.transformPoint(pixelFromCenter[0], pixelFromCenter[1]);
+        return pixelCamera;
       }
+      
+      // draw polygons
       let points = polygon.points;
       this._ctx.beginPath();
+      
       // move to first point
       let px0 = getPixel(points[0]);
       this._ctx.moveTo(px0[0], px0[1]);
-      // draw other points
+      // set other points
       for (let p = 1; p < points.length; p++) {
         let px = getPixel(points[p]);
         this._ctx.lineTo(px[0], px[1]);
       }
       this._ctx.closePath();
+      
+      // finish drawing the path
       if (filled) {
         this._ctx.fillStyle = color;
         this._ctx.fill();
@@ -116,6 +117,15 @@ class DrawHandler {
         this._ctx.stroke();
       }
     }
+    
+    // draw camera crosshairs
+    this._ctx.beginPath();
+    this._ctx.moveTo(cvs.width / 2, 0);
+    this._ctx.lineTo(cvs.width / 2, cvs.height);
+    this._ctx.moveTo(0, cvs.height / 2);
+    this._ctx.lineTo(cvs.width, cvs.height / 2);
+    this._ctx.strokeStyle = '#0000ff';
+    this._ctx.stroke();
   }
 
   get camera() {

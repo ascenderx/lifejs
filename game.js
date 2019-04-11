@@ -29,9 +29,9 @@ class Game {
   }
   
   _handleInput() {
-    let cameraSpeed = 10;
-    let cameraZoomSpeed = 10;
     let camera = this._hdlDraw.camera;
+    let cameraSpeed = 10 / camera.computedZoom;
+    let cameraZoomSpeed = 10;
     let keysDown = this._hdlInput.getKeys();
     if (!("Shift" in keysDown)) {
       if ("ArrowRight" in keysDown) {

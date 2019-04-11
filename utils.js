@@ -5,3 +5,20 @@ function randInt(minimum, maximum) {
 function randIntExcl(minimum, maximum) {
   return randInt(minimum, maximum - 1);
 }
+
+let _debugMessages = {};
+
+function debugOnce(tag, message) {
+  if (!(tag in _debugMessages)) {
+    _debugMessages[tag] = true;
+    console.log(`%cDEBUG @${tag}: ${message}`, 'color: #00f;');
+  }
+}
+
+function debugOnceJSON(tag, value) {
+  debugOnce(tag, JSON.stringify(value, null, ' '));
+}
+
+function isSet(value) {
+  return value !== null && value !== undefined;
+}

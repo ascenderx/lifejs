@@ -6,7 +6,7 @@ class Grid {
     this._cH = cellHeight;
   }
   
-  computePixel(gridX, gridY) {
+  scalePoint(gridX, gridY) {
     let pxX = gridX * this._cW;
     let pxY = gridY * this._cH;
     
