@@ -7,7 +7,7 @@ class Game {
     const CELL_WIDTH = 20;
     const CELL_HEIGHT = 20;
     this._grid = new Grid(GRID_WIDTH, GRID_HEIGHT, CELL_WIDTH, CELL_HEIGHT);
-    this._framesToWait = 3;
+    this._framesToWait = 2;
     this._paused = false;
 
     // game settings

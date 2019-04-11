@@ -12,9 +12,9 @@ class Wanderer extends Moveable {
   constructor(x = 0, y = 0, speed = 1, sleepProbability = 0) {
     super(x, y, null, null);
     this._speed = speed;
+    this._drawData = _W_DRAW_DATA.clone();
     this._computeVelocity(this._generateDirection());
     this._sleepProb = sleepProbability;
-    this._drawData = _W_DRAW_DATA;
   }
   
   _computeVelocity(direction) {
@@ -22,26 +22,31 @@ class Wanderer extends Moveable {
       case _W_DIRS.N:
         this._dx = 0;
         this._dy = -this._speed;
+        this._drawData.polygon = TRIANGLE_N;
         break;
       
       case _W_DIRS.E:
         this._dx = +this._speed;
         this._dy = 0;
+        this._drawData.polygon = TRIANGLE_E;
         break;
       
       case _W_DIRS.S:
         this._dx = 0;
         this._dy = +this._speed;
+        this._drawData.polygon = TRIANGLE_S;
         break;
       
       case _W_DIRS.W:
         this._dx = -this._speed;
         this._dy = 0;
+        this._drawData.polygon = TRIANGLE_W;
         break;
       
       default:
         this._dx = 0;
         this._dy = 0;
+        this._drawData.polygon = DIAMOND;
     }
   }
   
