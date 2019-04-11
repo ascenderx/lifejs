@@ -24,6 +24,13 @@ class Grid {
     let x = gridPoint[0] % this._w;
     let y = gridPoint[1] % this._h;
     
+    if (x < 0) {
+      x = this._w + x;
+    }
+    if (y < 0) {
+      y = this._h + y;
+    }
+    
     return [x, y];
   }
   
@@ -31,10 +38,10 @@ class Grid {
     entity.x %= this._w;
     entity.y %= this._h;
     if (entity.x < 0) {
-      entity.x = this._w - entity.x;
+      entity.x = this._w + entity.x;
     }
     if (entity.y < 0) {
-      entity.y = this._h - entity.y;
+      entity.y = this._h + entity.y;
     }
   }
   

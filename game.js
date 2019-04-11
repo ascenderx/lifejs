@@ -19,11 +19,12 @@ class Game {
       this._entities.push(new Plant(x, y));
     }
     const NUM_WANDERERS = 10;
+    const WANDERER_SPEED = 1;
     for (let w = 0; w < NUM_WANDERERS; w++) {
       let x = randomIntExcl(0, GRID_WIDTH);
       let y = randomIntExcl(0, GRID_HEIGHT);
       let sleepProb = randomInt(0, 10);
-      this._entities.push(new Wanderer(x, y, sleepProb));
+      this._entities.push(new Wanderer(x, y, WANDERER_SPEED, sleepProb));
     }
     
     // handlers
