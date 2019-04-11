@@ -1,9 +1,9 @@
-function randInt(minimum, maximum) {
+function randomInt(minimum, maximum) {
   return Math.floor(Math.random() * (maximum - minimum + 1) + minimum);
 }
 
-function randIntExcl(minimum, maximum) {
-  return randInt(minimum, maximum - 1);
+function randomIntExcl(minimum, maximum) {
+  return randomInt(minimum, maximum - 1);
 }
 
 let _debugMessages = {};

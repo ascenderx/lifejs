@@ -1,5 +1,5 @@
 class DrawData {
-  constructor(polygon, color, filled) {
+  constructor(polygon = SQUARE, color = '#ffffff', filled = false) {
     this._polygon = polygon;
     this._color = color;
     this._filled = filled;

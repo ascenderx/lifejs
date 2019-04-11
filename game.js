@@ -12,9 +12,15 @@ class Game {
     this._entities = [];
     const NUM_PLANTS = 30;
     for (let p = 0; p < NUM_PLANTS; p++) {
-      let x = randIntExcl(0, GRID_WIDTH);
-      let y = randIntExcl(0, GRID_HEIGHT);
+      let x = randomIntExcl(0, GRID_WIDTH);
+      let y = randomIntExcl(0, GRID_HEIGHT);
       this._entities.push(new Plant(x, y));
+    }
+    const NUM_WANDERERS = 10;
+    for (let w = 0; w < NUM_WANDERERS; w++) {
+      let x = randomIntExcl(0, GRID_WIDTH);
+      let y = randomIntExcl(0, GRID_HEIGHT);
+      this._entities.push(new Wanderer(x, y));
     }
     
     // handlers
@@ -33,21 +39,21 @@ class Game {
     let cameraSpeed = 10 / camera.computedZoom;
     let cameraZoomSpeed = 10;
     let keysDown = this._hdlInput.getKeys();
-    if (!("Shift" in keysDown)) {
-      if ("ArrowRight" in keysDown) {
+    if (!('Shift' in keysDown)) {
+      if ('ArrowRight' in keysDown) {
         camera.moveRight(cameraSpeed);
-      } else if ("ArrowLeft" in keysDown) {
+      } else if ('ArrowLeft' in keysDown) {
         camera.moveLeft(cameraSpeed);
       }
-      if ("ArrowDown" in keysDown) {
+      if ('ArrowDown' in keysDown) {
         camera.moveDown(cameraSpeed);
-      } else if ("ArrowUp" in keysDown) {
+      } else if ('ArrowUp' in keysDown) {
         camera.moveUp(cameraSpeed);
       }
     } else {
-      if ("ArrowUp" in keysDown) {
+      if ('ArrowUp' in keysDown) {
         camera.zoomIn(cameraZoomSpeed);
-      } else if ("ArrowDown" in keysDown) {
+      } else if ('ArrowDown' in keysDown) {
         camera.zoomOut(cameraZoomSpeed);
       }
     }

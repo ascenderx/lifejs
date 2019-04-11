@@ -5,7 +5,7 @@ const _DRAW_DATA_PLANT = new DrawData(
 );
 
 class Plant extends Entity {
-  constructor(x, y) {
+  constructor(x = 0, y = 0) {
     super(x, y);
   }
   
